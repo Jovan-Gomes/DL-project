@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Protest+Revolution&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/renderer.js" defer></script>
+    <title>Lyrical Lens</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: rgb(67, 118, 108);
+          padding: 20px;
+      }
+      #form {
+          background-color: rgb(248, 250, 229);
+          border-radius: 5px;
+          padding: 20px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+      }
+      #loading-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+          z-index: 9999; /* Ensure it's on top of other elements */
+          display: none; /* Initially hidden */
+      }
+      #loading-spinner {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+      }
+      #gif-sadness {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        top: 250px;
+        left: 570px;
+        z-index: 999;
+      }
+      #gif-joy {
+        position: absolute;
+        width: 250px;
+        height: auto;
+        top: 250px;
+        left: 630px;
+        z-index: 999;
+      }
+      #gif-love {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        top: 250px;
+        left: 570px;
+        z-index: 999;
+      }
+      #gif-anger {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        top: 250px;
+        left: 570px;
+        z-index: 999;
+      }
+      #gif-fear {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        top: 250px;
+        left: 570px;
+        z-index: 999;
+      }
+      #gif-surprise {
+        position: absolute;
+        width: 330px;
+        height: auto;
+        top: 220px;
+        left: 590px;
+        z-index: 999;
+      }
+      .hover-effect {
+          transition: text-shadow 0.3s ease; /* Smooth transition for the hover effect */
+      }
+
+      .hover-effect:hover {
+          text-shadow: 2px 2px 10px rgba(67, 118, 108, 0.8); /* Example text shadow on hover */
+      }
+
+      .logo {
+          
+          position: absolute;
+          width: 450px; /* Adjust the width */
+          height: auto; /* Maintain aspect ratio */
+          top: 20px;
+          margin-left: 520px;
+          z-index: 999;
+      }
+
+      .selected-image {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        z-index: 999;
+        top: 230px;
+        left: 570px;
+      }
+    </style>
+  </head>
+  <body class="bg-teal-700" style="background-color: rgb(67, 118, 108);">
+    <div class="max-w-full m-auto h-screen flex flex-col align-center justify-center">
+
+      <img src="./images/mainpagelogo.png" alt="Logo" id="logo" class="logo" style="margin-top: 20px;">
+
+      <div class="flex flex-row justify-between w-full">
+        <label style="width: 200px; height: 150px; margin-right: 80px; margin-left: 235px; flex-shrink: 0; background-color: rgb(248, 250, 229);" id="img-container1" class=" flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover-effect hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span style="color: #76453B; font-family: Aladin, system-ui; font-weight: 400; font-style: normal; font-size: x-large;" class="mt-2 leading-normal text-center hover-effect">Select an image for Poem</span>
+          <input id="img" type="file" class="hidden hover-effect" />
+        </label>
+        
+        <label style="width: 200px; height: 150px; margin-right: 80px; flex-shrink: 0; background-color: rgb(248, 250, 229);" id="img-container2" class=" flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover-effect hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span style="color: #76453B; font-family: Aladin, system-ui; font-weight: 400; font-style: normal; font-size: x-large;" class="mt-2 leading-normal text-center hover-effect">Select an image for Story</span>
+          <input id="img2" type="file" class="hidden hover-effect" />
+        </label>
+        
+        <label style="width: 200px; height: 150px; margin-right: 80px; flex-shrink: 0; background-color: rgb(248, 250, 229);" id="img-container3" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover-effect hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span style="color: #76453B; font-family: Aladin, system-ui; font-weight: 400; font-style: normal; font-size: x-large;" class="mt-2 leading-normal text-center hover-effect">Select an image for OCR analysis</span>
+          <input id="img3" type="file" class="hidden hover-effect" />
+        </label>
+  
+        <label style="width: 200px; height: 150px; flex-shrink: 0; background-color: rgb(248, 250, 229);" id="img-container4" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover:text-teal-800 hover-effect">
+          <img src="./images/vmouse.svg" width="50" />
+          <span style="color: #76453B; font-family: Aladin, system-ui; font-weight: 400; font-style: normal; font-size: x-large;" class="mt-2 leading-normal text-center hover-effect">Virtual mouse</span>
+          <button id="virtualM" class="hover-effect"></button>
+        </label>
+
+        <!-- Back button, hidden initially -->
+        <button 
+          type="click"
+          id="back-button" 
+          style="width: 80px; height: 40px; margin-left: 40px;"
+          class="hidden w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >Back</button>
+      
+        
+      </div>
+
+      <img id="selected-image" src="" alt="Selected Image" class="selected-image" style="display: none; max-width: 100% ; margin-top: 20px;" >
+
+      <!-- Form - ->    REMOVE THE SPACE BETWEEN THE -->
+      <form id="img-form" class="hidden">
+        <div class="mt-6">
+          <label
+          id="form"
+          style="width: 800px; height: 400px; margin-right: 80px; margin-left: 350px; flex-shrink: 0; overflow: auto;" 
+          class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800"
+          >
+            <span class="mt-2 leading-normal text-center"><strong>Output: </strong></span>
+            <output id="predictions" class="text-black text-lg text-center font-mono mt-6"></output>
+          </label>
+        </div>
+
+        <!-- Button - ->    REMOVE THE SPACE BETWEEN THE -->
+        <div class="mt-6">
+          <button
+            id="sub"
+            type="submit"
+            class="w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Generate
+          </button>
+        </div>
+
+        <div id="loading-overlay" >
+          <img src="loading.gif" alt="Loading..." id="loading-spinner" />
+        </div>
+
+        <img src="sad2.png" alt="Sadness GIF" id="gif-sadness" style="display: none;">
+        <img src="joy.png" alt="Joy GIF" id="gif-joy" style="display: none;">
+        <img src="love2.png" alt="Love GIF" id="gif-love" style="display: none;">
+        <img src="anger2.png" alt="Anger GIF" id="gif-anger" style="display: none;">
+        <img src="fear2.png" alt="Fear GIF" id="gif-fear" style="display: none;">
+        <img src="surprise2.png" alt="Surprise GIF" id="gif-surprise" style="display: none;">
+
+
+        <p class="text-white text-lg text-center font-mono mt-6" id="fname"><strong>File: </strong><span id="filename"></span></p>
+        <p class="text-white text-lg text-center font-mono mt-2" id="outpath"><strong>ImagePath: </strong><span id="output-path"></span></p>
+      </form>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+<!--Incase of emergency Break Glass...(AKA comments)-->
+<!--
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/renderer.js" defer></script>
+    <title>Lyrical Lens</title>
+  </head>
+  <body class="bg-teal-700">
+    <div
+      class="max-w-full m-auto h-screen flex flex-col align-center justify-center"
+    >
+      <div class="flex flex-row justify-between w-full">
+        <label
+        style="width: 200px; height: 150px; margin-right: 80px; margin-left: 200px; flex-shrink: 0;" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800"
+        >
+          <img src="./images/logo.svg" width="32" />
+          <span class="mt-2 leading-normal text-center">Select an image for Poem</span>
+          <input id="img" type="file" class="hidden" />
+        </label>
+
+        <label style="width: 200px; height: 150px; margin-right: 80px; flex-shrink: 0;" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span class="mt-2 leading-normal text-center">Select an image for Story</span>
+          <input id="img2" type="file" class="hidden" />
+        </label>
+  
+        <label style="width: 200px; height: 150px; margin-right: 80px; flex-shrink: 0;" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span class="mt-2 leading-normal text-center">Select an image for OCR analysis</span>
+          <input id="img3" type="file" class="hidden" />
+        </label>
+  
+        <label style="width: 200px; height: 150px; flex-shrink: 0;" class="flex-1 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800">
+          <img src="./images/logo.svg" width="32" />
+          <span class="mt-2 leading-normal text-center">Virtual mouse</span>
+          <input id="img4" type="file" class="hidden" />
+        </label>
+
+      </div>
+
+      <!- - Form - ->    REMOVE THE SPACE BETWEEN THE --
+      <form id="img-form" class="hidden">
+        <div class="mt-6">
+          <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Width</label>
+          <input
+            type="number"
+            name="width"
+            id="width"
+            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            placeholder="Width"
+          />
+        </div>
+
+        <div class="mt-4">
+          <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Height</label>
+          <input
+            type="number"
+            name="height"
+            id="height"
+            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            placeholder="Height"
+          />
+        </div>
+
+        <!- - Button - ->    REMOVE THE SPACE BETWEEN THE --
+        <div class="mt-6">
+          <button
+            type="submit"
+            class="w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Temporary
+          </button>
+
+      </form>
+
+      <p class="text-white text-lg text-center font-mono mt-6"><strong>File: </strong><span id="filename"></span></p>
+      <p class="text-white text-lg text-center font-mono mt-2"><strong>Output: </strong><span id="output-path"></span></p>
+    </div>
+  </body>
+</html>
+
+
+-->
